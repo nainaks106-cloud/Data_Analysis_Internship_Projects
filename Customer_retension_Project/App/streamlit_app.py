@@ -13,7 +13,7 @@ st.set_page_config(
 # ─── LOAD DATA ─────────────────────────────────
 @st.cache_data
 def load_data():
-    df = pd.read_csv(r"C:\Users\NAINA\OneDrive\Documents\GitHub\Data_Analysis_Internship_Projects\Customer_retension_Project\DATA\European_Bank.csv")
+    df = pd.read_csv(r"C:\Users\NAINA\OneDrive\Documents\GitHub\Data_Analysis_Internship_Projects\Data_Analysis_Internship_Projects\Customer_retension_Project\DATA\European_Bank.csv")
     df.drop(['CustomerId', 'Surname', 'Year'], axis=1, inplace=True)
 
     def engagement_profile(row):
