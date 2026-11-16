@@ -402,12 +402,17 @@ with tab_detector:
     table["Balance/Salary"] = table["Balance/Salary"].round(2)
     st.dataframe(table, hide_index=True)
 
+    contact = d[(flags.iloc[:, 0] | flags.iloc[:, 1]) & (d["Exited"] == 0)]
     st.download_button(
-        "Download customers still with the bank (CSV)",
-        data=still[cols].sort_values("Balance", ascending=False).to_csv(index=False).encode("utf-8"),
+        f"Download inactive at-risk customers still with the bank ({len(contact):,}) as CSV",
+        data=contact[cols].sort_values("Balance", ascending=False).to_csv(index=False).encode("utf-8"),
         file_name="at_risk_premium_customers.csv",
         mime="text/csv",
-        disabled=still.empty,
+        disabled=contact.empty,
+    )
+    st.caption(
+        "The download covers the two inactive-based flags only. High earners with a near-empty balance "
+        "churn below the average, so treat that group as a cross-sell list, not an at-risk list."
     )
 
 # ── 4. Retention strength ────────────────────────────────────────────────────
@@ -461,15 +466,23 @@ with tab_strength:
         "RSI bands with fewer than 30 customers are hidden."
     )
 
-    sticky = d[d["RSITier"] == "High"]
+    high = d[d["RSITier"] == "High"]
+    sticky = high[high["NumOfProducts"] <= 2]
+    excluded = len(high) - len(sticky)
     low = d[d["RSITier"] == "Low"]
     c = st.columns(3)
     c[0].metric(
-        "Sticky customers (High tier)", f"{len(sticky):,}",
+        "Sticky customers (High tier, up to 2 products)", f"{len(sticky):,}",
         delta=f"{len(sticky) / len(d) * 100:.1f}% of view", delta_color="off",
+        help="High RSI tier, excluding customers with 3 or 4 products, who churn heavily.",
     )
     c[1].metric("Sticky churn rate", pct(sticky["Exited"].mean()) if len(sticky) else "n/a")
     c[2].metric("Low-tier churn rate", pct(low["Exited"].mean()) if len(low) else "n/a")
+    if excluded:
+        st.caption(
+            f"{excluded:,} High-tier customers with 3 or 4 products are excluded from the sticky group "
+            f"(their churn rate is {pct(high[high['NumOfProducts'] >= 3]['Exited'].mean())})."
+        )
 
     t = rate_table(d, ["RSITier", "Geography"])
     t["_o"] = t["RSITier"].map({o: i for i, o in enumerate(TIER_ORDER)})
@@ -517,7 +530,7 @@ Products and tenure are min-max scaled. The tiers split the full dataset into th
 Note that RSI scores 3 and 4 products higher, yet those customers churn heavily, so check the
 product charts alongside the RSI view.
 
-**Sticky customer:** a customer in the High RSI tier.
+**Sticky customer:** a customer in the High RSI tier with at most 2 products. Customers with 3 or 4 products are excluded because they churn heavily.
 
 **KPIs**
 - Engagement Retention Ratio: churn (inactive) / churn (active)
