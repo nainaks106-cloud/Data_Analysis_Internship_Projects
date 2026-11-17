@@ -1,4 +1,7 @@
 # Customer Engagement & Retention Analytics
+## Live Demo
+Streamlit dashboard: https://dataanalysisinternshipprojects-ls7xlftvgprdixdzynhhkn.streamlit.app/
+
 
 ## Project Overview
 Analysis of 10,000 European bank customers to identify 
