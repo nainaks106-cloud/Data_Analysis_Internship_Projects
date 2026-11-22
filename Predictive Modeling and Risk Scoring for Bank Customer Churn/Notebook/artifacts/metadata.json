@@ -1,0 +1,69 @@
+{
+  "best_model": "Gradient Boosting",
+  "threshold": 0.30000000000000004,
+  "risk_bands": [
+    0.3,
+    0.6
+  ],
+  "raw_features": [
+    "CreditScore",
+    "Geography",
+    "Gender",
+    "Age",
+    "Tenure",
+    "Balance",
+    "NumOfProducts",
+    "HasCrCard",
+    "IsActiveMember",
+    "EstimatedSalary"
+  ],
+  "test_metrics_default_0.5": {
+    "Accuracy": 0.8685,
+    "Precision": 0.7903225806451613,
+    "Recall": 0.48157248157248156,
+    "F1": 0.5984732824427481,
+    "ROC_AUC": 0.8718626176253295
+  },
+  "test_metrics_tuned": {
+    "Accuracy": 0.8495,
+    "Precision": 0.6232558139534884,
+    "Recall": 0.6584766584766585,
+    "F1": 0.6403823178016727,
+    "ROC_AUC": 0.8718626176253295
+  },
+  "feature_ranges": {
+    "CreditScore": [
+      350.0,
+      850.0
+    ],
+    "Age": [
+      18.0,
+      92.0
+    ],
+    "Tenure": [
+      0.0,
+      10.0
+    ],
+    "Balance": [
+      0.0,
+      250898.09
+    ],
+    "EstimatedSalary": [
+      11.58,
+      199992.48
+    ],
+    "NumOfProducts": [
+      1.0,
+      4.0
+    ]
+  },
+  "geographies": [
+    "France",
+    "Germany",
+    "Spain"
+  ],
+  "genders": [
+    "Female",
+    "Male"
+  ]
+}
