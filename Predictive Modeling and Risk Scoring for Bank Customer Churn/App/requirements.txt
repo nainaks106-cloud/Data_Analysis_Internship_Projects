@@ -7,5 +7,5 @@ xgboost>=2.0
 # IMPORTANT: pin scikit-learn to the exact version you trained the model with,
 # otherwise the saved model may fail to load. Check it with:
 #   python -c "import sklearn; print(sklearn.__version__)"
-# then replace the line below, for example: scikit-learn==1.5.2
+# then replace the line below, for example: scikit-learn==1.7.2
 scikit-learn
